@@ -10,13 +10,6 @@
 > [`docs/设计规格.md`](docs/设计规格.md)，落地清单见
 > [`docs/骨架落地清单.md`](docs/骨架落地清单.md)。
 
-> [!WARNING]
-> **本规格尚未按题库侧的 `_SCALE.md` 复核规模。** 现有 stage 的改动面普遍只有 1~2 个文件、
-> canonical 只有 3~4 条，低于现行下限（改动面 **≥3 文件**、canonical **≥5 条**且红 ≥2 条不同不变量、
-> 含边界/拒绝路径）。**开工前必须先复核并扩编**（同 stage 扩面，或与相邻 stage 合并），
-> 并把结果写回规格与 ticket 卡。参考已复核的两份：`mq-lab`（6 stage 全部扩面）
-> 与 `concurrency-lab`（Stage 1 / Stage 2）。
-
 
 ## 这是什么
 
@@ -28,10 +21,10 @@
 | 语言栈 | Java 17（HotSpot）+ Maven 3.9 + JUnit 5（surefire `@Tag` 分组）+ `java.lang.management` MXBean |
 | 基础设施 | **无外部依赖、无 docker**：纯进程内 + `ProcessBuilder` 起子 JVM；不联网、不下载任何 jar/agent |
 | stage 数 | 6 个（其中 Stage 6 是**选修**；`stage-00-onboarding` 是 board-only，不出 ticket） |
-| 每 stage 规模 | （见规格） |
+| 每 stage 规模 | 按 [`_SCALE.md`](./_SCALE.md) 的下限**复核后**（本轮「v1.1 规模复核」，见 §1）：6 个 stage **全部走「同 stage 扩面」、零合并**——改动面 **6 → 19 个文件位置**（v1 的 6 处 + 13 处新增），每个 stage **≥ 3 个文件且三类角色齐备**；canonical **6 → 33 条**（红 **14** · 单线程基线 **13** · 边界/拒绝 **6**）；被破坏的不变量 **14 个**（= 红用例数，每个 stage **≥ 2 条且分属不同不变量**）；考点族每个 stage ≥ 2 个 |
 | 依赖前置 | `manifest.requires: {java: "17", build: maven}`（不声明 docker：本 Track 不需要基础设施） |
 | 与 database-bagu 的关系 | **互补不重叠**：那条练「数据落在磁盘上的正确性」（事务/锁/MVCC/缓存），这条练「数据停在内存里的形状」（堆/元空间/直接内存/类/对象）。两条共用同一套骨架仓约定与分支链契约，但不共用代码 |
-| 预计落地工作量 | 骨架 ≈ 6 人日 · canonical 测试与 helper ≈ 8 人日 · 题面与判据 ≈ 3 人日 · 分支与 digest pin ≈ 1 人日（详见 §7） |
+| 预计落地工作量 | **v1.1 口径 ≈ 29 人日**：骨架 ≈ 10 · canonical 测试与 helper ≈ 13 · 题面与判据 ≈ 4.5 · 分支与 digest pin ≈ 1.5（旧口径 18 人日是「每 stage 1 个缺陷文件 / 1 条红」的估算，已按 §7 的 v1.1 重新估算块上修） |
 
 ## stage 一览
 
